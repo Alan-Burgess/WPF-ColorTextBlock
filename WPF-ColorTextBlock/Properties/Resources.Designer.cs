@@ -10,7 +10,8 @@
 
 namespace WPF_ColorTextBlock.Properties {
     using System;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -18,19 +19,19 @@ namespace WPF_ColorTextBlock.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -44,7 +45,7 @@ namespace WPF_ColorTextBlock.Properties {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -58,44 +59,31 @@ namespace WPF_ColorTextBlock.Properties {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to ts.ItemName.
+        ///   Looks up a localized string similar to The WPF ColorTextBlock Control Demo Application.
         /// </summary>
         public static string AppDisplayName {
             get {
                 return ResourceManager.GetString("AppDisplayName", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to ShellGoBackButton.
+        ///   Looks up a localized string similar to A demo of the %R%iColorTextBlock%&lt;%&lt; Control. %G%s16&gt;(and its many %fLucida Handwriting&gt;features%&lt;)%&lt;%&lt;.
+        /// </summary>
+        public static string MainPageTitle {
+            get {
+                return ResourceManager.GetString("MainPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go back.
         /// </summary>
         public static string ShellGoBackButton {
             get {
                 return ResourceManager.GetString("ShellGoBackButton", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Main.
-        /// </summary>
-        public static string MainPageTitle
-        {
-            get
-            {
-                return ResourceManager.GetString("MainPageTitle", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Blank.
-        /// </summary>
-        public static string BlankPageTitle
-        {
-            get
-            {
-                return ResourceManager.GetString("BlankPageTitle", resourceCulture);
             }
         }
     }

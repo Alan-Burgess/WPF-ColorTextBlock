@@ -71,9 +71,6 @@ public partial class App : Application
         services.AddTransient<MainViewModel>();
         services.AddTransient<MainPage>();
 
-        services.AddTransient<BlankViewModel>();
-        services.AddTransient<BlankPage>();
-
         // Configuration
         services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
     }

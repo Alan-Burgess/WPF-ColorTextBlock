@@ -10,14 +10,13 @@ namespace WPF_ColorTextBlock.Services;
 
 public class PageService : IPageService
 {
-    private readonly Dictionary<string, Type> _pages = new Dictionary<string, Type>();
+    private readonly Dictionary<string, Type> _pages = [];
     private readonly IServiceProvider _serviceProvider;
 
     public PageService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
         Configure<MainViewModel, MainPage>();
-        Configure<BlankViewModel, BlankPage>();
     }
 
     public Type GetPageType(string key)
