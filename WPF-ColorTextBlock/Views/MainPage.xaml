@@ -16,17 +16,39 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <wpfcontrollibrary:ColourTextBlock
-            Style="{StaticResource PageTitleStyle}"
             Margin="{StaticResource MediumLeftMargin}"
-            ColourText="{x:Static properties:Resources.MainPageTitle}" />
+            ColourText="{x:Static properties:Resources.MainPageTitle}"
+            Style="{StaticResource PageTitleStyle}" />
         <Grid
             Grid.Row="1"
             Margin="{StaticResource MediumLeftRightMargin}"
             Background="{DynamicResource MahApps.Brushes.Gray10}">
-            <!--
-                The Mahapps Gray10 color represents where you should place your content.
-                Place your content here.
-            -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <wpfcontrollibrary:ColourTextBlock
+                x:Name="CTB"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="6"
+                ColourText="Hello"
+                TextWrapping="Wrap" />
+
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="1"
+                MinHeight="100"
+                Text="{Binding Path=ColourText, ElementName=CTB}"
+                TextWrapping="Wrap" />
         </Grid>
     </Grid>
 </Page>

@@ -9,9 +9,12 @@ namespace WpfControlLibrary
     /// </summary>
     public partial class ColourTextBlock : SelectableTextBlock
     {
+        private bool _initialised;
+
         public ColourTextBlock()
         {
             InitializeComponent();
+
         }
 
         public static readonly DependencyProperty ColourTextProperty = DependencyProperty.Register(
@@ -34,7 +37,31 @@ namespace WpfControlLibrary
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    SetText(value);
+                    if (!_initialised)
+                    {
+                        // We need to wait for the Style to be initialised before we can set the text
+                        // This is because the Style can be set after the ColourText property is set
+
+                        Task.Run(async () =>
+                        {
+                            await Task.Delay(10);
+                            Dispatcher.Invoke(() =>
+                            {
+                                _fontSize = FontSize;
+                                _fontFamily = FontFamily;
+                                _foreground = Foreground;
+                                _fontStyle = FontStyle;
+                                _fontWeight = FontWeight;
+                                _initialised = true;
+
+                                SetText(value);
+                            });
+                        });
+                    }
+                    else
+                    {
+                        SetText(value);
+                    };
                 }
                 else
                 {
@@ -45,14 +72,8 @@ namespace WpfControlLibrary
 
         private void SetText(string text)
         {
-            Text = string.Empty;
 
-            _brush = Brushes.Black;
-            _fontStyle = FontStyles.Normal;
-            _fontWeight =  FontWeights.Normal;
-            _fontSize = FontSize;
-            _fontFamily = FontFamily;
-
+            Inlines.Clear();
             _stack.Clear();
 
             var segments = text.Split('%').ToList();
@@ -75,13 +96,13 @@ namespace WpfControlLibrary
             }
             catch ( ArgumentException ex )
             {
-                MessageBox.Show($"{ex.Message}", "String Colour Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Text = $"String Colour Error: {ex.Message}";
             }
         }
 
         private readonly Stack<object> _stack = new();
 
-        private Brush _brush;
+        private Brush _foreground;
         private bool _escapeChar;
         private FontStyle _fontStyle;
         private FontWeight _fontWeight;
@@ -114,30 +135,30 @@ namespace WpfControlLibrary
 
                     case 'R':
                     case 'T': // Type
-                        _stack.Push(_brush);
-                        _brush = Brushes.Red;
+                        _stack.Push(_foreground);
+                        _foreground = Brushes.Red;
                         break;
 
                     case 'P':
                     case 'V': // Variable
-                        _stack.Push(_brush);
-                        _brush = Brushes.Purple;
+                        _stack.Push(_foreground);
+                        _foreground = Brushes.Purple;
                         break;
 
                     case 'G':
                     case 'O': // Optional
-                        _stack.Push(_brush);
-                        _brush = Brushes.Green;
+                        _stack.Push(_foreground);
+                        _foreground = Brushes.Green;
                         break;
 
                     case 'F': // Function
-                        _stack.Push(_brush);
-                        _brush = Brushes.Blue;
+                        _stack.Push(_foreground);
+                        _foreground = Brushes.Blue;
                         break;
 
                     case 'B':
-                        _stack.Push(_brush);
-                        _brush = Brushes.Black;
+                        _stack.Push(_foreground);
+                        _foreground = Brushes.Black;
                         break;
 
                     case 'i':
@@ -165,6 +186,12 @@ namespace WpfControlLibrary
                         _fontWeight = FontWeights.DemiBold;
                         break;
 
+                    case 'w':
+                        _stack.Push(_fontWeight);
+                        var w = GetValue(text, ref str);
+                        _fontWeight = Enum.Parse<FontWeight>(w);
+                        break;
+
                     case 's':
                         _stack.Push(_fontSize);
                         var v = GetValue(text, ref str);
@@ -178,11 +205,12 @@ namespace WpfControlLibrary
                         break;
 
                     case 'c':
-                        _stack.Push(_brush);
+                        _stack.Push(_foreground);
                         var c = GetValue(text, ref str);
-                        _brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(c));
+                        _foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(c));
                         break;
 
+                    case '>':
                     case '<':
                         if (_stack.Count > 0)
                         {
@@ -190,7 +218,7 @@ namespace WpfControlLibrary
                             switch (obj)
                             {
                                 case Brush b:
-                                    _brush = b;
+                                    _foreground = b;
                                     break;
                                 case FontStyle fs:
                                     _fontStyle = fs;
@@ -215,7 +243,7 @@ namespace WpfControlLibrary
 
             if (string.IsNullOrEmpty(str)) return;
 
-            Inlines.Add(new Run(str) { Foreground = _brush, FontFamily = _fontFamily, FontStyle = _fontStyle, FontWeight = _fontWeight, FontSize = _fontSize });
+            Inlines.Add(new Run(str) { Foreground = _foreground, FontFamily = _fontFamily, FontStyle = _fontStyle, FontWeight = _fontWeight, FontSize = _fontSize });
         }
 
         static string GetValue(string text, ref string str)
