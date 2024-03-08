@@ -15,6 +15,6 @@ Though the project is here to be used, I am still in the process of making a use
 ## How it works
 
 Below is the string required to display the formatted text in the image above:
-'''
+```
 A demo of the %cRed>%tItalic>ColorTextBlock%>%> Control %cGreen>%s16>(and its many %fLucida Handwriting>features%>)%>%>.
-'''
+```
