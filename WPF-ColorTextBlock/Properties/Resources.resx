@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainPageTitle" xml:space="preserve">
-    <value>A demo of the %R%iColorTextBlock%&lt;%&lt; Control %G%s16&gt;(and its many %fLucida Handwriting&gt;features%&lt;)%&lt;%&lt;.</value>
+    <value>A demo of the %cRed&gt;%tItalic&gt;ColorTextBlock%&gt;%&gt; Control %cGreen&gt;%s16&gt;(and its many %fLucida Handwriting&gt;features%&gt;)%&gt;%&gt;.</value>
   </data>
   <data name="ShellGoBackButton" xml:space="preserve">
     <value>Go back</value>

@@ -14,7 +14,6 @@ namespace WpfControlLibrary
         public ColourTextBlock()
         {
             InitializeComponent();
-
         }
 
         public static readonly DependencyProperty ColourTextProperty = DependencyProperty.Register(
@@ -93,6 +92,13 @@ namespace WpfControlLibrary
                 {
                     CreateStringAndColour(segment);
                 }
+
+                // If there are any commands left on the stack, remove them to restore the original settings
+
+                while (_stack.Count > 0)
+                {
+                    RestoreCommand();
+                }
             }
             catch ( ArgumentException ex )
             {
@@ -127,123 +133,108 @@ namespace WpfControlLibrary
             else
             {
                 str = text.Remove(0, 1);
-
-                switch (text[0])
+                var cmd = text.ToLower()[0];
+                if (cmd != '%')
                 {
-                    case '%':
-                        break;
-
-                    case 'R':
-                    case 'T': // Type
-                        _stack.Push(_foreground);
-                        _foreground = Brushes.Red;
-                        break;
-
-                    case 'P':
-                    case 'V': // Variable
-                        _stack.Push(_foreground);
-                        _foreground = Brushes.Purple;
-                        break;
-
-                    case 'G':
-                    case 'O': // Optional
-                        _stack.Push(_foreground);
-                        _foreground = Brushes.Green;
-                        break;
-
-                    case 'F': // Function
-                        _stack.Push(_foreground);
-                        _foreground = Brushes.Blue;
-                        break;
-
-                    case 'B':
-                        _stack.Push(_foreground);
-                        _foreground = Brushes.Black;
-                        break;
-
-                    case 'i':
-                        _stack.Push(_fontStyle);
-                        _fontStyle = FontStyles.Italic;
-                        break;
-
-                    case 'o':
-                        _stack.Push(_fontStyle);
-                        _fontStyle = FontStyles.Oblique;
-                        break;
-
-                    case 'n':
-                        _stack.Push(_fontStyle);
-                        _fontStyle = FontStyles.Normal;
-                        break;
-
-                    case 'b':
-                        _stack.Push(_fontWeight);
-                        _fontWeight = FontWeights.Bold;
-                        break;
-
-                    case 'd':
-                        _stack.Push(_fontWeight);
-                        _fontWeight = FontWeights.DemiBold;
-                        break;
-
-                    case 'w':
-                        _stack.Push(_fontWeight);
-                        var w = GetValue(text, ref str);
-                        _fontWeight = Enum.Parse<FontWeight>(w);
-                        break;
-
-                    case 's':
-                        _stack.Push(_fontSize);
-                        var v = GetValue(text, ref str);
-                        _fontSize = double.Parse(v);
-                        break;
-
-                    case 'f':
-                        _stack.Push(_fontFamily);
-                        var f = GetValue(text, ref str);
-                        _fontFamily = new FontFamily(f);
-                        break;
-
-                    case 'c':
-                        _stack.Push(_foreground);
-                        var c = GetValue(text, ref str);
-                        _foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(c));
-                        break;
-
-                    case '>':
-                    case '<':
+                    if (cmd == '>')
+                    {
                         if (_stack.Count > 0)
                         {
-                            var obj = _stack.Pop();
-                            switch (obj)
-                            {
-                                case Brush b:
-                                    _foreground = b;
-                                    break;
-                                case FontStyle fs:
-                                    _fontStyle = fs;
-                                    break;
-                                case FontWeight fw:
-                                    _fontWeight = fw;
-                                    break;
-                                case double d:
-                                    _fontSize = d;
-                                    break;
-                                case FontFamily ff:
-                                    _fontFamily = ff;
-                                    break;
-                            }
+                            RestoreCommand();
                         }
-                        break;
+                    }
+                    else
+                    {
+                        var arg = GetValue(text, ref str);
 
-                    default:
-                        throw new ArgumentException($"'{text[0]}' not a valid colour or type in string '{text}'");
+                        switch (cmd)
+                        {
+                            case 't':
+                                _stack.Push(_fontStyle);
+                                try
+                                {
+                                    _fontStyle = (FontStyle)new FontStyleConverter().ConvertFromString(arg);
+                                }
+                                catch
+                                {
+                                    _fontStyle = FontStyles.Normal;
+                                }
+                                break;
+
+                            case 'w':
+                                _stack.Push(_fontWeight);
+                                try
+                                {
+                                    _fontWeight = (FontWeight)new FontWeightConverter().ConvertFromString(arg);
+                                }
+                                catch
+                                {
+                                    _fontWeight = FontWeights.Normal;
+                                }
+                                break;
+
+                            case 's':
+                                _stack.Push(_fontSize);
+                                try
+                                {
+                                    _fontSize = double.Parse(arg);
+                                }
+                                catch
+                                {
+                                    _fontSize = 12;
+                                }
+                                break;
+
+                            case 'f':
+                                _stack.Push(_fontFamily);
+                                _fontFamily = new FontFamily(arg);
+                                break;
+
+                            case 'c':
+                                _stack.Push(_foreground);
+                                try
+                                {
+                                    _foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(arg));
+                                }
+                                catch
+                                {
+                                    _foreground = Brushes.Black;
+                                }
+                                break;
+
+                            default:
+                                throw new ArgumentException($"'{text[0]}' not a valid colour or type in string '{text}'");
+                        }
+                    }
                 }
             }
 
             if (string.IsNullOrEmpty(str)) return;
 
             Inlines.Add(new Run(str) { Foreground = _foreground, FontFamily = _fontFamily, FontStyle = _fontStyle, FontWeight = _fontWeight, FontSize = _fontSize });
+        }
+
+        private void RestoreCommand()
+        {
+            var obj = _stack.Pop();
+            switch (obj)
+            {
+                case Brush b:
+                    _foreground = b;
+                    break;
+                case FontStyle fs:
+                    _fontStyle = fs;
+                    break;
+                case FontWeight fw:
+                    _fontWeight = fw;
+                    break;
+                case double d:
+                    _fontSize = d;
+                    break;
+                case FontFamily ff:
+                    _fontFamily = ff;
+                    break;
+            }
         }
 
         static string GetValue(string text, ref string str)
