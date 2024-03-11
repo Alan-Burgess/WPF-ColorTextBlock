@@ -4,7 +4,7 @@
 
 ![alt text](Screenshot1.png?raw=true)
 
-This is a text block control that allows different colours, font sizes, font weights, font styles and font families. It also allows a user to select text and copy it to the clipboard.
+This is a text block control that allows different colors, font sizes, font weights, font styles and font families. It also allows a user to select text and copy it to the clipboard.
 
 ![alt text](Screenshot2.png?raw=true)
 
@@ -12,7 +12,7 @@ The demo project implementation demonstrates the use of it using a MVVM architec
 
 Though the project is here to be used, I am still in the process of making a useful demo application and documentation.
 
-## How it works
+## How the formatting is achieved
 
 Below is the string required to display the formatted text in the image above:
 
@@ -20,7 +20,7 @@ Below is the string required to display the formatted text in the image above:
 A demo of the %C=Red>%T=Italic>ColorTextBlock%>%> Control %C=Green>%S=16>(and its many %F=Lucida Handwriting>features%>)%>%>.
 ```
 
-The '=' is optional and the command character is not case sensitve:
+The '=' is optional and the command character is not case sensitive:
 
 ```
 A demo of the %cRed>%tItalic>ColorTextBlock%>%> Control %cGreen>%s16>(and its many %fLucida Handwriting>features%>)%>%>.
@@ -30,7 +30,7 @@ A demo of the %cRed>%tItalic>ColorTextBlock%>%> Control %cGreen>%s16>(and its ma
 
 The following commands are available:
 
-- **`%C=[Colour]>`** - Set the colour of the text.
+- **`%C=[Color]>`** - Set the color of the text.
   Example: **`%C=Red>`**
 - **`%F=[Font Family]>`** - Set the font family.
   Example: **`%F=Console>`**
@@ -44,6 +44,6 @@ The following commands are available:
 
 ### Use of commands
 
-When a command is embeded in the string, the string interpreter saves the previous setting, and it is restored by the `%>` command. If you fail to restore the setting, it will automatically be restored for you at the end of the string.
+When a command is embedded in the string, the string interpreter saves the previous setting, and it is restored by the `%>` command. If you fail to restore the setting, it will automatically be restored for you at the end of the string.
 
 
