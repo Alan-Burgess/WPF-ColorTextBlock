@@ -31,7 +31,7 @@ A demo of the %cRed>%tItalic>ColorTextBlock%>%> Control %cGreen>%s16>(and its ma
 The following commands are available:
 
 - **`%C=[Color]>`** - Set the color of the text.
-  Example: **`%C=Red>`**
+  Example: **`%C=Red>`** or **`%C=#FF0000>`**
 - **`%F=[Font Family]>`** - Set the font family.
   Example: **`%F=Console>`**
 - **`%S=[Size]>`** - Set the font size.
