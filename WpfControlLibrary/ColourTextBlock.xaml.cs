@@ -71,7 +71,6 @@ namespace WpfControlLibrary
 
         private void SetText(string text)
         {
-
             Inlines.Clear();
             _stack.Clear();
 
@@ -239,11 +238,19 @@ namespace WpfControlLibrary
 
         static string GetValue(string text, ref string str)
         {
+            var inxStart = 1;
+
+            if (text[1] == '=')
+            {
+                // Allow for the = to be optional
+                inxStart = 2;
+            }
+
             var inx = text.IndexOf('>');
             
             str = str.Remove(0, inx);
 
-            return text[1..inx];
+            return text[inxStart..inx];
         }
     }
 }

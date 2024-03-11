@@ -1,6 +1,6 @@
 # WPF-ColorTextBlock
 
-## Indroduction
+## Introduction
 
 ![alt text](Screenshot1.png?raw=true)
 
@@ -15,6 +15,35 @@ Though the project is here to be used, I am still in the process of making a use
 ## How it works
 
 Below is the string required to display the formatted text in the image above:
+
+```
+A demo of the %C=Red>%T=Italic>ColorTextBlock%>%> Control %C=Green>%S=16>(and its many %F=Lucida Handwriting>features%>)%>%>.
+```
+
+The '=' is optional and the command character is not case sensitve:
+
 ```
 A demo of the %cRed>%tItalic>ColorTextBlock%>%> Control %cGreen>%s16>(and its many %fLucida Handwriting>features%>)%>%>.
 ```
+
+## Commands
+
+The following commands are available:
+
+- **`%C=[Colour]>`** - Set the colour of the text.
+  Example: **`%C=Red>`**
+- **`%F=[Font Family]>`** - Set the font family.
+  Example: **`%F=Console>`**
+- **`%S=[Size]>`** - Set the font size.
+  Example: **`%S=16>`**
+- **`%T=[Font Style]>`** - Set the font style.
+  Example: **`%T=Italic>`**
+- **`%W=[Font Weight]>`** - Set the font weight.
+  Example: **`%W=Bold>`**
+- **`%>`** - Return to previous setting.
+
+### Use of commands
+
+When a command is embeded in the string, the string interpreter saves the previous setting, and it is restored by the `%>` command. If you fail to restore the setting, it will automatically be restored for you at the end of the string.
+
+

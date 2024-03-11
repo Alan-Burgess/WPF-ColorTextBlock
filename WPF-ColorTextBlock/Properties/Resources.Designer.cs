@@ -70,7 +70,7 @@ namespace WPF_ColorTextBlock.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A demo of the %cRed&gt;%tItalic&gt;ColorTextBlock%&gt;%&gt; Control %cGreen&gt;%s16&gt;(and its many %fLucida Handwriting&gt;features%&gt;)%&gt;%&gt;..
+        ///   Looks up a localized string similar to A demo of the %C=Red&gt;%T=Italic&gt;ColorTextBlock%&gt;%&gt; Control %C=Green&gt;%S=16&gt;(and its many %F=Lucida Handwriting&gt;features%&gt;)%&gt;%&gt;..
         /// </summary>
         public static string MainPageTitle {
             get {
